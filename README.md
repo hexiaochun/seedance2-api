@@ -21,12 +21,12 @@ Seedance 2.0 is ByteDance's next-generation AI video generation model with the f
 
 | Mode | Price |
 |------|-------|
-| Base price | 9 credits/completion |
-| Fast 5s (no video input) | 12 credits |
-| Fast 5s (with video input) | 24 credits |
-| Standard 5s (with video input) | 30 credits |
+| Base price | 40 credits/completion |
+| Fast 5s (text-to-video) | 50 credits |
+| Fast 5s (with video input) | 100 credits |
+| Standard 5s (with video input) | 200 credits |
 
-> Billed per second, default Fast (20% off): Fast without video 2.4/sec, with video 4.8/sec; Standard without video 3/sec, with video 6/sec (4-15 sec)
+> Billed per second: Fast without video 10/sec, with video 20/sec; Standard without video 20/sec, with video 40/sec (4-15 sec)
 
 ## Prerequisites
 
