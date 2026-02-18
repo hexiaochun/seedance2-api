@@ -384,17 +384,27 @@ Cursor Skills 是 Cursor 编辑器中的可复用 AI 工作流模板。安装后
 
 ### 安装 Skill
 
-**方式一：克隆仓库**
+**方式一：一键安装（推荐）**
+
+```bash
+# 通过 skills.sh（Vercel）
+npx skills add hexiaochun/seedance2-api
+
+# 或通过 agentskill.sh
+/learn @hexiaochun/seedance2-api
+```
+
+**方式二：克隆仓库**
 
 ```bash
 # 克隆本仓库
-git clone https://github.com/siliconflow/seedance2-api.git
+git clone https://github.com/hexiaochun/seedance2-api.git
 
 # 复制 skill 到你的项目
 cp -r seedance2-api/.cursor/skills/seedance2-api/ your-project/.cursor/skills/seedance2-api/
 ```
 
-**方式二：手动创建**
+**方式三：手动创建**
 
 在你的项目中创建 `.cursor/skills/seedance2-api/` 目录，将本仓库中的 `SKILL.md` 和 `reference.md` 放入其中。
 

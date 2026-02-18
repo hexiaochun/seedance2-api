@@ -384,17 +384,27 @@ Your Idea → Info Gathering → Storyboard Design → Generate Reference Images
 
 ### Install the Skill
 
-**Option 1: Clone the repository**
+**Option 1: One-command install (recommended)**
+
+```bash
+# Via skills.sh (Vercel)
+npx skills add hexiaochun/seedance2-api
+
+# Or via agentskill.sh
+/learn @hexiaochun/seedance2-api
+```
+
+**Option 2: Clone the repository**
 
 ```bash
 # Clone this repo
-git clone https://github.com/siliconflow/seedance2-api.git
+git clone https://github.com/hexiaochun/seedance2-api.git
 
 # Copy the skill to your project
 cp -r seedance2-api/.cursor/skills/seedance2-api/ your-project/.cursor/skills/seedance2-api/
 ```
 
-**Option 2: Manual setup**
+**Option 3: Manual setup**
 
 Create a `.cursor/skills/seedance2-api/` directory in your project and copy `SKILL.md` and `reference.md` from this repo into it.
 
