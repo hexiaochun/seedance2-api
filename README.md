@@ -2,7 +2,7 @@
 
 # Seedance 2.0 API Guide
 
-API integration examples for the Seedance 2.0 all-in-one model. Access ByteDance's next-generation AI video generation model through the [SuTui AI](https://www.xskill.ai/#/v2/models?model=st-ai%2Fsuper-seed2) platform.
+API integration examples for the Seedance 2.0 all-in-one model. Access ByteDance's next-generation AI video generation model through the [Xskill AI](https://www.xskill.ai/#/v2/models?model=st-ai%2Fsuper-seed2) platform.
 
 ## Model Overview
 
@@ -30,7 +30,7 @@ Seedance 2.0 is ByteDance's next-generation AI video generation model with the f
 
 ## Prerequisites
 
-1. Register an account at [SuTui AI](https://www.xskill.ai)
+1. Register an account at [Xskill AI](https://www.xskill.ai)
 2. Create an API Key on the [API Key page](https://www.xskill.ai/#/v2/api-key)
 3. Obtain credits for API calls
 
@@ -398,7 +398,7 @@ cp -r seedance2-api/.cursor/skills/seedance-storyboard/ your-project/.cursor/ski
 
 Create a `.cursor/skills/seedance-storyboard/` directory in your project and copy `SKILL.md` and `reference.md` from this repo into it.
 
-> **Prerequisites:** Cursor editor installed, MCP configured (see "MCP Integration" section above), SuTui AI account with sufficient credits.
+> **Prerequisites:** Cursor editor installed, MCP configured (see "MCP Integration" section above), Xskill AI account with sufficient credits.
 
 ### How to Use
 
@@ -556,7 +556,7 @@ Generate a video that transitions from a first frame image to a last frame image
 
 ## Links
 
-- [SuTui AI Website](https://www.xskill.ai)
+- [Xskill AI Website](https://www.xskill.ai)
 - [Seedance 2.0 Model Page](https://www.xskill.ai/#/v2/models?model=st-ai%2Fsuper-seed2)
 - [API Key Management](https://www.xskill.ai/#/v2/api-key)
 - [Task List](https://www.xskill.ai/#/v2/tasks)
