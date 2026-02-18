@@ -1,5 +1,5 @@
 ---
-name: seedance-storyboard
+name: seedance2-api
 description: Out-of-the-box Seedance 2.0 API skill — just one API key to generate AI videos. Builds storyboards, generates reference images with Seedream 4.5, submits video tasks, and polls results. Supports both MCP and standalone Python script mode. Use when the user mentions seedance, AI video, storyboard, or video generation.
 license: MIT
 compatibility: Requires Python 3.8+ with requests. Works with Cursor, Claude Code, or any SKILL.md-compatible agent.
@@ -34,7 +34,7 @@ metadata:
 **脚本路径：** 本 Skill 目录下的 `scripts/seedance_api.py`，定位方式：
 ```bash
 # 通过 Glob 工具搜索
-glob: .cursor/skills/seedance-storyboard/scripts/seedance_api.py
+glob: .cursor/skills/seedance2-api/scripts/seedance_api.py
 ```
 
 > 后续步骤中，每个 API 调用都同时给出 **MCP 方式** 和 **脚本方式**，根据 Step 0 的判断选择其一执行。
@@ -99,7 +99,7 @@ X-Y秒：[镜头运动] + [画面内容] + [动作描述]
 <summary><b>脚本方式</b></summary>
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "fal-ai/bytedance/seedream/v4.5/text-to-image" \
   --params '{"prompt":"An astronaut in a white spacesuit...","image_size":"landscape_16_9","num_images":1}'
 ```
@@ -124,7 +124,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
 <summary><b>脚本方式</b></summary>
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "fal-ai/bytedance/seedream/v4.5/edit" \
   --params '{"prompt":"Change the background to a forest","image_urls":["https://..."],"image_size":"landscape_16_9"}'
 ```
@@ -150,13 +150,13 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
 
 **单次查询：**
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py query \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py query \
   --task-id "TASK_ID_HERE"
 ```
 
 **自动轮询（推荐用于图片，间隔 10s，超时 180s）：**
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py poll \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py poll \
   --task-id "TASK_ID_HERE" --interval 10 --timeout 180
 ```
 
@@ -211,11 +211,11 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py poll \
 
 ```bash
 # 上传网络图片
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py upload \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py upload \
   --image-url "https://example.com/image.png"
 
 # 上传本地图片
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py upload \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py upload \
   --image-path "/path/to/local/image.png"
 ```
 
@@ -244,7 +244,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py upload \
 <summary><b>脚本方式</b></summary>
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "st-ai/super-seed2" \
   --params '{
     "prompt": "电影级写实科幻风格，15秒，16:9...",
@@ -279,7 +279,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
 <summary><b>脚本方式</b></summary>
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "st-ai/super-seed2" \
   --params '{
     "prompt": "镜头从首帧缓缓过渡到尾帧，画面流畅自然",
@@ -314,7 +314,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py submit \
 **推荐：使用 poll 自动轮询（后台运行，间隔 30s，超时 600s）：**
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py poll \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py poll \
   --task-id "TASK_ID_HERE" --interval 30 --timeout 600
 ```
 
@@ -323,7 +323,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py poll \
 **手动分次查询：**
 
 ```bash
-python .cursor/skills/seedance-storyboard/scripts/seedance_api.py query \
+python .cursor/skills/seedance2-api/scripts/seedance_api.py query \
   --task-id "TASK_ID_HERE"
 ```
 
@@ -444,7 +444,7 @@ python .cursor/skills/seedance-storyboard/scripts/seedance_api.py query \
 | 查询余额 | `python scripts/seedance_api.py balance` | 返回账户余额 |
 | 上传图片 | `python scripts/seedance_api.py upload --image-url URL` 或 `--image-path PATH` | 返回图片 URL |
 
-> **脚本路径说明：** 以上命令中的 `scripts/seedance_api.py` 是相对于 `.cursor/skills/seedance-storyboard/` 目录的路径。实际执行时使用完整路径 `.cursor/skills/seedance-storyboard/scripts/seedance_api.py`，或先 cd 到 skill 目录。
+> **脚本路径说明：** 以上命令中的 `scripts/seedance_api.py` 是相对于 `.cursor/skills/seedance2-api/` 目录的路径。实际执行时使用完整路径 `.cursor/skills/seedance2-api/scripts/seedance_api.py`，或先 cd 到 skill 目录。
 
 ## Seedance 2.0 限制
 

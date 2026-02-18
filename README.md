@@ -391,12 +391,12 @@ Your Idea → Info Gathering → Storyboard Design → Generate Reference Images
 git clone https://github.com/siliconflow/seedance2-api.git
 
 # Copy the skill to your project
-cp -r seedance2-api/.cursor/skills/seedance-storyboard/ your-project/.cursor/skills/seedance-storyboard/
+cp -r seedance2-api/.cursor/skills/seedance2-api/ your-project/.cursor/skills/seedance2-api/
 ```
 
 **Option 2: Manual setup**
 
-Create a `.cursor/skills/seedance-storyboard/` directory in your project and copy `SKILL.md` and `reference.md` from this repo into it.
+Create a `.cursor/skills/seedance2-api/` directory in your project and copy `SKILL.md` and `reference.md` from this repo into it.
 
 > **Prerequisites:** Cursor editor installed, MCP configured (see "MCP Integration" section above), Xskill AI account with sufficient credits.
 

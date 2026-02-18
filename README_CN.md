@@ -391,12 +391,12 @@ Cursor Skills 是 Cursor 编辑器中的可复用 AI 工作流模板。安装后
 git clone https://github.com/siliconflow/seedance2-api.git
 
 # 复制 skill 到你的项目
-cp -r seedance2-api/.cursor/skills/seedance-storyboard/ your-project/.cursor/skills/seedance-storyboard/
+cp -r seedance2-api/.cursor/skills/seedance2-api/ your-project/.cursor/skills/seedance2-api/
 ```
 
 **方式二：手动创建**
 
-在你的项目中创建 `.cursor/skills/seedance-storyboard/` 目录，将本仓库中的 `SKILL.md` 和 `reference.md` 放入其中。
+在你的项目中创建 `.cursor/skills/seedance2-api/` 目录，将本仓库中的 `SKILL.md` 和 `reference.md` 放入其中。
 
 > **前提条件：** 已安装 Cursor 编辑器，已配置 MCP（参考上方"MCP 调用"章节），Xskill AI 账号已有足够积分。
 
