@@ -1,6 +1,6 @@
 ---
 name: seedance-storyboard
-description: Guides users from creative idea to finished Seedance 2.0 video — builds professional storyboards, generates reference images with Seedream 4.5, submits video generation tasks, and polls for results. Falls back to Python scripts when MCP is unavailable. Use when the user mentions storyboard, seedance, video script, AI video generation, or shot planning.
+description: Out-of-the-box Seedance 2.0 API skill — just one API key to generate AI videos. Builds storyboards, generates reference images with Seedream 4.5, submits video tasks, and polls results. Supports both MCP and standalone Python script mode. Use when the user mentions seedance, AI video, storyboard, or video generation.
 license: MIT
 compatibility: Requires Python 3.8+ with requests. Works with Cursor, Claude Code, or any SKILL.md-compatible agent.
 metadata:
