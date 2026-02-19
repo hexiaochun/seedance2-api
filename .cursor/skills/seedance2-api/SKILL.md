@@ -5,98 +5,98 @@ license: MIT
 compatibility: Requires Python 3.8+ with requests. Works with Cursor, Claude Code, or any SKILL.md-compatible agent.
 metadata:
   author: hexiaochun
-  version: "1.0"
+  version: "1.1"
   tags: video-generation ai-video seedance storyboard bytedance seedream
 ---
 
-# Seedance 2.0 分镜创作与视频生成
+# Seedance 2.0 Storyboard & Video Generation
 
-从创意到成片的全流程：引导分镜 → 画参考图 → 提交视频 → 获取结果。
+End-to-end workflow from concept to final video: Storyboard → Reference images → Submit video task → Get results.
 
-## Step 0: 确定执行方式（MCP 或脚本）
+## Step 0: Determine Execution Mode (MCP or Script)
 
-**优先检测 MCP 是否可用：**
+**Check MCP availability first:**
 
-1. 检查 `xskill-ai` MCP 服务状态（读取 `mcps/user-xskill-ai/STATUS.md`）
-2. 如果 MCP 可用 → 使用 `submit_task` / `get_task` 等 MCP 工具
-3. 如果 MCP 不可用或报错 → 切换到**脚本模式**
+1. Check `xskill-ai` MCP service status (read `mcps/user-xskill-ai/STATUS.md`)
+2. If MCP is available → use `submit_task` / `get_task` and other MCP tools
+3. If MCP is unavailable or returns errors → switch to **Script Mode**
 
-**脚本模式前置条件：**
+**Script mode prerequisites:**
 
-1. 确认环境变量 `XSKILL_API_KEY` 已设置（Shell 执行 `echo $XSKILL_API_KEY | head -c 10`）
-2. 如果未设置，提示用户：
+1. Verify `XSKILL_API_KEY` environment variable is set (run `echo $XSKILL_API_KEY | head -c 10`)
+2. If not set, prompt the user:
    ```
    export XSKILL_API_KEY=sk-your-api-key
-   获取 API Key: https://www.xskill.ai/#/v2/api-keys
+   Get your API Key: https://www.xskill.ai/#/v2/api-keys
    ```
-3. 确认 `requests` 已安装（`pip install requests`）
+3. Verify `requests` is installed (`pip install requests`)
 
-**脚本路径：** 本 Skill 目录下的 `scripts/seedance_api.py`，定位方式：
+**Script path:** Located under this skill's directory at `scripts/seedance_api.py`:
 ```bash
-# 通过 Glob 工具搜索
+# Find via Glob tool
 glob: .cursor/skills/seedance2-api/scripts/seedance_api.py
 ```
 
-> 后续步骤中，每个 API 调用都同时给出 **MCP 方式** 和 **脚本方式**，根据 Step 0 的判断选择其一执行。
+> In the following steps, each API call provides both **MCP method** and **Script method**. Choose one based on the Step 0 result.
 
-## Step 1: 理解用户想法
+## Step 1: Understand the User's Idea
 
-收集以下信息（缺失的主动询问）：
+Collect the following information (proactively ask if anything is missing):
 
-- **故事核心**：一句话概括要拍什么
-- **时长**：4-15 秒
-- **画面比例**：16:9 / 9:16 / 1:1 / 21:9 / 4:3 / 3:4
-- **视觉风格**：写实/动画/水墨/科幻/赛博朋克等
-- **素材情况**：是否有现成图片/视频/音频，还是需要 AI 生成
-- **功能模式**：是否需要首尾帧控制（first_last_frames），否则默认全能模式（omni_reference）
+- **Story concept**: one-sentence summary of the video
+- **Duration**: 4–15 seconds
+- **Aspect ratio**: 16:9 / 9:16 / 1:1 / 21:9 / 4:3 / 3:4
+- **Visual style**: realistic / animation / ink wash / sci-fi / cyberpunk, etc.
+- **Assets**: existing images/videos/audio, or need AI generation
+- **Function mode**: first & last frame control (`first_last_frames`) or default omni mode (`omni_reference`)
 
-## Step 2: 深入挖掘（5 个维度）
+## Step 2: Deep Dive (5 Dimensions)
 
-针对每个维度引导用户补充细节：
+Guide the user through each dimension for richer detail:
 
-1. **内容** - 主角是谁？做什么？在哪里？
-2. **视觉** - 光影、色调、质感、氛围
-3. **镜头** - 推/拉/摇/移/跟/环绕/升降
-4. **动作** - 主体的具体动作和节奏
-5. **声音** - 配乐风格、音效、对白
+1. **Content** – Who is the subject? What are they doing? Where?
+2. **Visuals** – Lighting, color palette, texture, mood
+3. **Camera** – Push in / pull out / pan / tilt / track / orbit / crane
+4. **Motion** – Subject actions and pacing
+5. **Audio** – Music style, sound effects, dialogue
 
-## Step 3: 构建分镜结构
+## Step 3: Build Storyboard Structure
 
-按时间轴拆分镜头，使用以下公式：
+Break down shots along the timeline using this formula:
 
 ```
-【风格】_____风格，_____秒，_____比例，_____氛围
+[Style] _____ style, _____ seconds, _____ ratio, _____ mood
 
-0-X秒：[镜头运动] + [画面内容] + [动作描述]
-X-Y秒：[镜头运动] + [画面内容] + [动作描述]
+0-Xs: [Camera movement] + [Visual content] + [Action description]
+X-Ys: [Camera movement] + [Visual content] + [Action description]
 ...
 
-【声音】_____配乐 + _____音效 + _____对白
-【参考】@image_file_1 _____，@video_file_1 _____
+[Audio] _____ music + _____ SFX + _____ dialogue
+[References] @image_file_1 _____, @video_file_1 _____
 ```
 
-详细模板和示例见 [reference.md](reference.md)。
+See [reference.md](reference.md) for detailed templates and examples.
 
-## Step 4: 生成参考图（如需要）
+## Step 4: Generate Reference Images (If Needed)
 
-若用户没有现成素材，使用 Seedream 4.5 生成角色图、场景图、首帧/尾帧等。
+If the user has no existing assets, use Seedream 4.5 to generate character art, scenes, first/last frames, etc.
 
-### 文生图
+### Text-to-Image
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `submit_task` 工具：
+Call `submit_task` tool:
 - model_id: `fal-ai/bytedance/seedream/v4.5/text-to-image`
 - parameters:
-  - prompt: 详细的图片描述（英文效果更佳）
-  - image_size: 根据视频比例选择
-  - num_images: 需要的数量（1-6）
+  - prompt: detailed image description (English works best)
+  - image_size: choose based on video aspect ratio
+  - num_images: number needed (1–6)
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
@@ -106,22 +106,22 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
 
 </details>
 
-### 图像编辑（基于现有图片修改）
+### Image Editing (Modify Existing Images)
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `submit_task` 工具：
+Call `submit_task` tool:
 - model_id: `fal-ai/bytedance/seedream/v4.5/edit`
 - parameters:
-  - prompt: 编辑指令（用 Figure 1/2/3 引用图片）
-  - image_urls: 输入图片 URL 数组
-  - image_size: 输出尺寸
+  - prompt: editing instructions (use Figure 1/2/3 to reference images)
+  - image_urls: array of input image URLs
+  - image_size: output size
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
@@ -131,30 +131,30 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
 
 </details>
 
-### 轮询图片结果
+### Poll Image Results
 
-图片约 1-2 分钟完成。
+Images typically complete in 1–2 minutes.
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `get_task` 工具查询状态：
-- 首次 30 秒后查询
-- 之后每 30 秒查询一次
-- 状态为 `completed` 时提取图片 URL
+Call `get_task` tool to check status:
+- First query after 30 seconds
+- Then every 30 seconds
+- Extract image URL when status is `completed`
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
-**单次查询：**
+**Single query:**
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py query \
   --task-id "TASK_ID_HERE"
 ```
 
-**自动轮询（推荐用于图片，间隔 10s，超时 180s）：**
+**Auto-poll (recommended for images, interval 10s, timeout 180s):**
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py poll \
   --task-id "TASK_ID_HERE" --interval 10 --timeout 180
@@ -162,92 +162,91 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py poll \
 
 </details>
 
-### image_size 对照表
+### image_size Reference
 
-| 视频比例 | 推荐 image_size | 说明 |
-|---------|----------------|------|
-| 16:9 | landscape_16_9 | 横屏 |
-| 9:16 | portrait_16_9 | 竖屏 |
-| 4:3 | landscape_4_3 | 横屏 |
-| 3:4 | portrait_4_3 | 竖屏 |
-| 1:1 | square_hd | 方形 |
-| 21:9 | landscape_16_9 | 近似超宽屏 |
+| Aspect Ratio | Recommended image_size | Note |
+|--------------|------------------------|------|
+| 16:9 | landscape_16_9 | Landscape |
+| 9:16 | portrait_16_9 | Portrait |
+| 4:3 | landscape_4_3 | Landscape |
+| 3:4 | portrait_4_3 | Portrait |
+| 1:1 | square_hd | Square |
+| 21:9 | landscape_16_9 | Approximate ultrawide |
 
-## Step 5: 生成专业提示词
+## Step 5: Compose the Final Prompt
 
-将分镜结构和参考图整合为最终提示词：
+Merge the storyboard structure and reference images into the final prompt:
 
-- 用 `@image_file_1`、`@image_file_2` 等引用 image_files 数组中的图片
-- 用 `@video_file_1` 等引用 video_files 数组中的视频
-- 用 `@audio_file_1` 等引用 audio_files 数组中的音频
-- 也兼容旧版 `@图片1`、`@视频1`、`@音频1` 语法
+- Use `@image_file_1`, `@image_file_2`, etc. to reference images in the image_files array
+- Use `@video_file_1`, etc. to reference videos in the video_files array
+- Use `@audio_file_1`, etc. to reference audio in the audio_files array
 
-**引用语法示例：**
+**Reference syntax example:**
 
 ```
-@image_file_1 作为角色形象参考，参考 @video_file_1 的运镜方式，配合 @audio_file_1 的配乐
+@image_file_1 as character reference, follow @video_file_1 camera movement, with @audio_file_1 as background music
 ```
 
-**重要：** `image_files` 数组中第 N 个 URL 对应 `@image_file_N`，`video_files` 和 `audio_files` 分别独立编号。
+**Important:** The Nth URL in `image_files` maps to `@image_file_N`. `video_files` and `audio_files` are independently numbered.
 
-## Step 6: 提交视频任务
+## Step 6: Submit Video Task
 
-**处理素材 URL：**
-- Seedream 生成的图片：已有 URL，直接使用
-- 用户提供的网络图片：直接使用
-- 用户提供的本地图片：先上传获取 URL（见下方上传方式）
+**Handle asset URLs:**
+- Seedream-generated images: URL already available, use directly
+- User-provided web images: use directly
+- User-provided local images: upload first to get URL (see upload methods below)
 
-### 上传本地图片
+### Upload Local Images
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `upload_image` 工具：image_url 或 image_data
+Call `upload_image` tool: image_url or image_data
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
 ```bash
-# 上传网络图片
+# Upload from URL
 python .cursor/skills/seedance2-api/scripts/seedance_api.py upload \
   --image-url "https://example.com/image.png"
 
-# 上传本地图片
+# Upload local file
 python .cursor/skills/seedance2-api/scripts/seedance_api.py upload \
   --image-path "/path/to/local/image.png"
 ```
 
 </details>
 
-### 提交 Seedance 2.0 任务（全能模式 omni_reference）
+### Submit Seedance 2.0 Task (Omni Reference Mode)
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `submit_task` 工具：
+Call `submit_task` tool:
 - model_id: `st-ai/super-seed2`
 - parameters:
-  - prompt: Step 5 生成的完整提示词
-  - functionMode: `omni_reference`（默认，可省略）
-  - image_files: 参考图片 URL 数组（最多 9 张，顺序对应 @image_file_1/2/3...）
-  - video_files: 参考视频 URL 数组（最多 3 个，总时长 ≤ 15s）
-  - audio_files: 参考音频 URL 数组（最多 3 个）
-  - ratio: 画面比例（`16:9` / `9:16` / `1:1` / `21:9` / `4:3` / `3:4`）
-  - duration: 时长整数（`4` - `15`）
-  - model: `seedance_2.0_fast`（默认快速）或 `seedance_2.0`（标准质量）
+  - prompt: the full prompt from Step 5
+  - functionMode: `omni_reference` (default, can be omitted)
+  - image_files: reference image URL array (up to 9, order matches @image_file_1/2/3...)
+  - video_files: reference video URL array (up to 3, total duration ≤ 15s)
+  - audio_files: reference audio URL array (up to 3)
+  - ratio: aspect ratio (`16:9` / `9:16` / `1:1` / `21:9` / `4:3` / `3:4`)
+  - duration: integer length (`4`–`15`)
+  - model: `seedance_2.0_fast` (default, faster) or `seedance_2.0` (standard quality)
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "st-ai/super-seed2" \
   --params '{
-    "prompt": "电影级写实科幻风格，15秒，16:9...",
+    "prompt": "Cinematic realistic sci-fi style, 15 seconds, 16:9...",
     "functionMode": "omni_reference",
     "image_files": ["https://img1.png", "https://img2.png"],
     "ratio": "16:9",
@@ -258,31 +257,31 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
 
 </details>
 
-### 提交 Seedance 2.0 任务（首尾帧模式 first_last_frames）
+### Submit Seedance 2.0 Task (First & Last Frames Mode)
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-调用 `submit_task` 工具：
+Call `submit_task` tool:
 - model_id: `st-ai/super-seed2`
 - parameters:
-  - prompt: 视频描述提示词
+  - prompt: video description prompt
   - functionMode: `first_last_frames`
-  - filePaths: 图片 URL 数组（0 张=文生视频，1 张=首帧图生视频，2 张=首尾帧视频）
-  - ratio: 画面比例
-  - duration: 时长整数
-  - model: `seedance_2.0_fast` 或 `seedance_2.0`
+  - filePaths: image URL array (0 = text-to-video, 1 = first frame, 2 = first & last frames)
+  - ratio: aspect ratio
+  - duration: integer length
+  - model: `seedance_2.0_fast` or `seedance_2.0`
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
   --model "st-ai/super-seed2" \
   --params '{
-    "prompt": "镜头从首帧缓缓过渡到尾帧，画面流畅自然",
+    "prompt": "Camera smoothly transitions from first frame to last frame, fluid motion",
     "functionMode": "first_last_frames",
     "filePaths": ["https://first-frame.png", "https://last-frame.png"],
     "ratio": "16:9",
@@ -293,34 +292,34 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py submit \
 
 </details>
 
-## Step 7: 轮询等待视频结果
+## Step 7: Poll for Video Results
 
-视频生成约需 10 分钟。
+Video generation takes approximately 10 minutes.
 
 <details>
-<summary><b>MCP 方式</b></summary>
+<summary><b>MCP Method</b></summary>
 
-轮询策略：
-1. 提交后告知用户"视频正在生成，预计 10 分钟"
-2. 首次 **60 秒**后调用 `get_task` 查询
-3. 之后每 **90 秒**查询一次
-4. 每次查询后向用户报告状态
+Polling strategy:
+1. After submission, inform the user: "Video is generating, estimated ~10 minutes"
+2. First query after **60 seconds** via `get_task`
+3. Then every **90 seconds**
+4. Report status to the user after each query
 
 </details>
 
 <details>
-<summary><b>脚本方式</b></summary>
+<summary><b>Script Method</b></summary>
 
-**推荐：使用 poll 自动轮询（后台运行，间隔 30s，超时 600s）：**
+**Recommended: auto-poll (runs in foreground, interval 30s, timeout 600s):**
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py poll \
   --task-id "TASK_ID_HERE" --interval 30 --timeout 600
 ```
 
-脚本会在 stderr 打印轮询进度，完成后在 stdout 输出 JSON 结果。
+Progress is printed to stderr; final JSON result is printed to stdout when complete.
 
-**手动分次查询：**
+**Manual single query:**
 
 ```bash
 python .cursor/skills/seedance2-api/scripts/seedance_api.py query \
@@ -329,130 +328,130 @@ python .cursor/skills/seedance2-api/scripts/seedance_api.py query \
 
 </details>
 
-状态说明：
-- `pending` → "排队中..."
-- `processing` → "生成中..."
-- `completed` → 提取视频 URL 并展示给用户
-- `failed` → 告知失败原因，建议调整提示词重试
+Status reference:
+- `pending` → "Queued..."
+- `processing` → "Generating..."
+- `completed` → Extract the video URL and present to the user
+- `failed` → Report the error; suggest adjusting the prompt and retrying
 
-## 完整流程示例
+## Full Workflow Example
 
-用户说："帮我做一个宇航员在火星行走的视频"
+User says: "Make a video of an astronaut walking on Mars"
 
-### MCP 可用时
+### When MCP Is Available
 
 ```
-1. 收集信息 → 15秒，16:9，电影级科幻风格，无现成素材
+1. Gather info → 15s, 16:9, cinematic sci-fi style, no existing assets
 
-2. 用 Seedream 4.5 生成宇航员图 + 火星场景图
+2. Generate astronaut + Mars scene images with Seedream 4.5
    submit_task("fal-ai/bytedance/seedream/v4.5/text-to-image", {...})
-   → 轮询 get_task → 获得图片 URL
+   → poll get_task → get image URLs
 
-3. 编写提示词 → 提交视频任务
+3. Compose prompt → submit video task
    submit_task("st-ai/super-seed2", {...})
 
-4. 轮询 get_task，~10分钟后获得视频 URL
+4. Poll get_task, ~10 min later → get video URL
 ```
 
-### MCP 不可用时（脚本模式）
+### When MCP Is Unavailable (Script Mode)
 
 ```
-1. 收集信息 → 15秒，16:9，电影级科幻风格
+1. Gather info → 15s, 16:9, cinematic sci-fi style
 
-2. 生成参考图：
+2. Generate reference images:
    python scripts/seedance_api.py submit \
      --model "fal-ai/bytedance/seedream/v4.5/text-to-image" \
      --params '{"prompt":"An astronaut in white spacesuit on Mars...","image_size":"landscape_16_9"}'
-   → 拿到 task_id
+   → get task_id
 
-3. 轮询图片结果：
+3. Poll for image results:
    python scripts/seedance_api.py poll --task-id "xxx" --interval 10 --timeout 180
-   → 拿到图片 URL
+   → get image URL
 
-4. 提交视频任务：
+4. Submit video task:
    python scripts/seedance_api.py submit \
      --model "st-ai/super-seed2" \
-     --params '{"prompt":"...分镜提示词...","functionMode":"omni_reference","image_files":["图片URL"],"ratio":"16:9","duration":15,"model":"seedance_2.0_fast"}'
-   → 拿到 task_id
+     --params '{"prompt":"...storyboard prompt...","functionMode":"omni_reference","image_files":["IMAGE_URL"],"ratio":"16:9","duration":15,"model":"seedance_2.0_fast"}'
+   → get task_id
 
-5. 轮询视频结果：
+5. Poll for video results:
    python scripts/seedance_api.py poll --task-id "xxx" --interval 30 --timeout 600
-   → 拿到视频 URL
+   → get video URL
 ```
 
-## 模型参数速查
+## Model Parameters Quick Reference
 
-### Seedream 4.5 文生图
+### Seedream 4.5 Text-to-Image
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| prompt | string | 是 | 图片描述 |
-| image_size | string | 否 | auto_2K / auto_4K / square_hd / portrait_4_3 / portrait_16_9 / landscape_4_3 / landscape_16_9 |
-| num_images | int | 否 | 1-6，默认 1 |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| prompt | string | Yes | Image description |
+| image_size | string | No | auto_2K / auto_4K / square_hd / portrait_4_3 / portrait_16_9 / landscape_4_3 / landscape_16_9 |
+| num_images | int | No | 1–6, default 1 |
 
-### Seedream 4.5 图像编辑
+### Seedream 4.5 Image Editing
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| prompt | string | 是 | 编辑指令，用 Figure 1/2/3 引用 |
-| image_urls | array | 是 | 输入图片 URL 列表 |
-| image_size | string | 否 | 同上 |
-| num_images | int | 否 | 1-6，默认 1 |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| prompt | string | Yes | Editing instructions, reference images as Figure 1/2/3 |
+| image_urls | array | Yes | Input image URL list |
+| image_size | string | No | Same as above |
+| num_images | int | No | 1–6, default 1 |
 
-### Seedance 2.0 视频（全能模式 omni_reference）
+### Seedance 2.0 Video (Omni Reference Mode)
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| prompt | string | 是 | 分镜提示词，用 @image_file_N/@video_file_N/@audio_file_N 引用 |
-| functionMode | string | 否 | `omni_reference`（默认） |
-| image_files | array | 否 | 参考图片 URL 数组（最多 9 张） |
-| video_files | array | 否 | 参考视频 URL 数组（最多 3 个，总时长 ≤ 15s） |
-| audio_files | array | 否 | 参考音频 URL 数组（最多 3 个） |
-| ratio | string | 否 | 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 |
-| duration | integer | 否 | 4-15 整数，默认 5 |
-| model | string | 否 | seedance_2.0_fast（默认）/ seedance_2.0 |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| prompt | string | Yes | Storyboard prompt, use @image_file_N/@video_file_N/@audio_file_N |
+| functionMode | string | No | `omni_reference` (default) |
+| image_files | array | No | Reference image URL array (up to 9) |
+| video_files | array | No | Reference video URL array (up to 3, total ≤ 15s) |
+| audio_files | array | No | Reference audio URL array (up to 3) |
+| ratio | string | No | 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 |
+| duration | integer | No | 4–15, default 5 |
+| model | string | No | seedance_2.0_fast (default) / seedance_2.0 |
 
-### Seedance 2.0 视频（首尾帧模式 first_last_frames）
+### Seedance 2.0 Video (First & Last Frames Mode)
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| prompt | string | 是 | 视频描述提示词 |
-| functionMode | string | 是 | `first_last_frames` |
-| filePaths | array | 否 | 图片 URL 数组（0张=文生视频，1张=首帧，2张=首尾帧） |
-| ratio | string | 否 | 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 |
-| duration | integer | 否 | 4-15 整数，默认 5 |
-| model | string | 否 | seedance_2.0_fast（默认）/ seedance_2.0 |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| prompt | string | Yes | Video description prompt |
+| functionMode | string | Yes | `first_last_frames` |
+| filePaths | array | No | Image URL array (0 = text-to-video, 1 = first frame, 2 = first & last) |
+| ratio | string | No | 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 |
+| duration | integer | No | 4–15, default 5 |
+| model | string | No | seedance_2.0_fast (default) / seedance_2.0 |
 
-## 工具速查
+## Tools Quick Reference
 
-### MCP 工具
+### MCP Tools
 
-| 操作 | 工具 | 关键参数 |
-|------|------|---------|
-| 提交任务 | submit_task | model_id, parameters |
-| 查询结果 | get_task | task_id |
-| 上传图片 | upload_image | image_url 或 image_data |
-| 查询余额 | get_balance | 无 |
+| Action | Tool | Key Parameters |
+|--------|------|----------------|
+| Submit task | submit_task | model_id, parameters |
+| Query result | get_task | task_id |
+| Upload image | upload_image | image_url or image_data |
+| Check balance | get_balance | (none) |
 
-### 脚本命令（MCP 不可用时）
+### Script Commands (When MCP Is Unavailable)
 
-| 操作 | 命令 | 说明 |
-|------|------|------|
-| 提交任务 | `python scripts/seedance_api.py submit --model MODEL --params '{...}'` | 返回 task_id |
-| 单次查询 | `python scripts/seedance_api.py query --task-id ID` | 返回当前状态 |
-| 自动轮询 | `python scripts/seedance_api.py poll --task-id ID --interval N --timeout N` | 阻塞直到完成 |
-| 查询余额 | `python scripts/seedance_api.py balance` | 返回账户余额 |
-| 上传图片 | `python scripts/seedance_api.py upload --image-url URL` 或 `--image-path PATH` | 返回图片 URL |
+| Action | Command | Description |
+|--------|---------|-------------|
+| Submit task | `python scripts/seedance_api.py submit --model MODEL --params '{...}'` | Returns task_id |
+| Single query | `python scripts/seedance_api.py query --task-id ID` | Returns current status |
+| Auto-poll | `python scripts/seedance_api.py poll --task-id ID --interval N --timeout N` | Blocks until done |
+| Check balance | `python scripts/seedance_api.py balance` | Returns account balance |
+| Upload image | `python scripts/seedance_api.py upload --image-url URL` or `--image-path PATH` | Returns image URL |
 
-> **脚本路径说明：** 以上命令中的 `scripts/seedance_api.py` 是相对于 `.cursor/skills/seedance2-api/` 目录的路径。实际执行时使用完整路径 `.cursor/skills/seedance2-api/scripts/seedance_api.py`，或先 cd 到 skill 目录。
+> **Script path note:** The `scripts/seedance_api.py` path above is relative to `.cursor/skills/seedance2-api/`. Use the full path `.cursor/skills/seedance2-api/scripts/seedance_api.py` when executing, or `cd` into the skill directory first.
 
-## Seedance 2.0 限制
+## Seedance 2.0 Limitations
 
-- 不支持上传写实真人脸部素材
-- 最多 12 个文件：图片 ≤ 9 + 视频 ≤ 3 + 音频 ≤ 3
-- 视频/音频参考总时长 ≤ 15 秒
-- 含视频参考会消耗更多积分
+- Realistic human face uploads are not supported
+- Maximum 12 files: images ≤ 9 + videos ≤ 3 + audio ≤ 3
+- Total video/audio reference duration ≤ 15 seconds
+- Video references consume more credits
 
-## 更多资源
+## More Resources
 
-详细分镜模板、完整示例和镜头词汇表见 [reference.md](reference.md)。
+See [reference.md](reference.md) for detailed storyboard templates, full examples, and camera movement glossary.
