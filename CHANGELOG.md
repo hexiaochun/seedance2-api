@@ -4,3 +4,4 @@
 - 2026-02-15: quick note
 - 2026-02-18: sync with main branch
 - 2026-02-23: tweak wording
+- 2026-02-27: fix typo
