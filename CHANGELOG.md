@@ -5,3 +5,4 @@
 - 2026-02-18: sync with main branch
 - 2026-02-23: tweak wording
 - 2026-02-27: fix typo
+- 2026-03-03: refine description
