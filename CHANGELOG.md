@@ -10,3 +10,4 @@
 - 2026-03-05: add example
 - 2026-03-10: linting fixes
 - 2026-03-10: note recent changes
+- 2026-03-14: update install command
