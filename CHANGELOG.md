@@ -13,3 +13,4 @@
 - 2026-03-14: update install command
 - 2026-03-18: minor edits
 - 2026-03-23: quick note
+- 2026-03-25: clarify instructions
