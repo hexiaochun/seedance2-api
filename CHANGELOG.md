@@ -18,3 +18,4 @@
 - 2026-04-20: minor edits
 - 2026-04-21: bump version note
 - 2026-04-21: reorder sections
+- 2026-04-21: small fixes
