@@ -21,3 +21,4 @@
 - 2026-04-21: small fixes
 - 2026-04-23: add license note
 - 2026-04-25: update changelog
+- 2026-05-04: note recent changes
