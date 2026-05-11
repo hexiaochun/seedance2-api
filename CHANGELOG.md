@@ -23,3 +23,4 @@
 - 2026-04-25: update changelog
 - 2026-05-04: note recent changes
 - 2026-05-06: update api note
+- 2026-05-11: fix typo
