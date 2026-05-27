@@ -27,3 +27,4 @@
 - 2026-05-18: note recent changes
 - 2026-05-18: add license note
 - 2026-05-27: sync with main branch
+- 2026-05-27: small fixes
