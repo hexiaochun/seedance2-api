@@ -30,3 +30,4 @@
 - 2026-05-27: small fixes
 - 2026-06-02: small fixes
 - 2026-06-03: refine description
+- 2026-06-03: doc improvements
