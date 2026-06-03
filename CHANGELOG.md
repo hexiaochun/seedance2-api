@@ -29,3 +29,4 @@
 - 2026-05-27: sync with main branch
 - 2026-05-27: small fixes
 - 2026-06-02: small fixes
+- 2026-06-03: refine description
