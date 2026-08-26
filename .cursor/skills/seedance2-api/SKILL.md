@@ -10,6 +10,36 @@ End-to-end workflow from concept to final video: Storyboard → Reference images
 
 ## Step 0: Determine Execution Mode (MCP or Script)
 
+### Optional Atlas Cloud provider
+
+Atlas Cloud is available as an explicit alternative for direct Seedance 2.0
+text-to-video and image-to-video requests. It does not replace the existing
+xskill.ai flow or change the default execution mode.
+
+```bash
+export ATLASCLOUD_API_KEY="your-api-key"
+# Optional for self-hosted gateways; defaults to https://api.atlascloud.ai/api/v1
+# export ATLASCLOUD_MEDIA_API_BASE="https://your-gateway.example/api/v1"
+
+# Text-to-video: submit exactly once, then poll with GET requests.
+python .cursor/skills/seedance2-api/scripts/atlas_seedance.py submit \
+  --prompt "A paper boat drifting across a calm lake" \
+  --duration 5 --resolution 720p --ratio 16:9
+
+python .cursor/skills/seedance2-api/scripts/atlas_seedance.py poll \
+  --prediction-id "PREDICTION_ID"
+
+# Add --image to switch to image-to-video. Local files and public URLs work.
+python .cursor/skills/seedance2-api/scripts/atlas_seedance.py submit \
+  --prompt "The camera slowly pushes toward the subject" \
+  --image ./first-frame.png --duration 5
+```
+
+The script uses `bytedance/seedance-2.0/text-to-video` or
+`bytedance/seedance-2.0/image-to-video` based on whether `--image` is present.
+Generation is a paid operation: the POST is never retried automatically, while
+prediction GET requests use bounded backoff for transient failures.
+
 **Check MCP availability first:**
 
 - Check `xskill-ai` MCP service status (read `mcps/user-xskill-ai/STATUS.md`)

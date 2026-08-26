@@ -35,6 +35,11 @@ Set your Seedance 2.0 API key as an environment variable:
 export SEEDANCE_API_KEY="your-api-key-here"
 ```
 
+An optional Atlas Cloud provider is also included for direct text-to-video and
+image-to-video generation. Set `ATLASCLOUD_API_KEY` and use
+`.cursor/skills/seedance2-api/scripts/atlas_seedance.py`; the existing provider
+remains the default. See the skill instructions for submit and poll examples.
+
 ## License
 
 MIT
